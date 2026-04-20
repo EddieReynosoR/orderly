@@ -20,9 +20,27 @@ services:
       timeout: 5s
       retries: 5
 
+  adminer:
+    image: adminer
+    container_name: orderly-adminer
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9080:8080"
+    networks:
+      - public
+      - private
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_data:
 
 networks:
+  public:
   private:
     internal: true
